@@ -39,18 +39,10 @@ pub struct Snake {
 impl Snake {
     pub fn step(&mut self) -> &mut Self {
         match &self.dir {
-            Direction::Up => {
-                self.pos.1 = (self.pos.1 + SIZE - 1) % SIZE;
-            }
-            Direction::Down => {
-                self.pos.1 = (self.pos.1 + 1) % SIZE;
-            }
-            Direction::Left => {
-                self.pos.0 = (self.pos.0 + SIZE - 1) % SIZE;
-            }
-            Direction::Right => {
-                self.pos.0 = (self.pos.0 + 1) % SIZE;
-            }
+            Direction::Up => self.pos.1 = (self.pos.1 + SIZE - 1) % SIZE,
+            Direction::Down => self.pos.1 = (self.pos.1 + 1) % SIZE,
+            Direction::Left => self.pos.0 = (self.pos.0 + SIZE - 1) % SIZE,
+            Direction::Right => self.pos.0 = (self.pos.0 + 1) % SIZE,
         }
         if self.grid[self.pos.1][self.pos.0] > 0 {
             self.alive = false;
@@ -94,7 +86,7 @@ impl Snake {
     }
 }
 
-pub fn newSnake() -> Snake {
+pub fn newSnake(dir: Direction) -> Snake {
     let pos = genPos();
     let mut g = [[0; SIZE]; SIZE];
     g[pos.1][pos.0] = 1;
@@ -104,7 +96,7 @@ pub fn newSnake() -> Snake {
     }
     Snake {
         len: 1,
-        dir: Direction::Up,
+        dir: dir,
         pos: pos,
         grid: g,
         alive: true,

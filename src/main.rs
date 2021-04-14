@@ -9,7 +9,7 @@ use std::io;
 use std::io::Write;
 
 fn main() {
-    let mut s = snake::newSnake();
+    let mut s = snake::newSnake(snake::Direction::Up);
     snake::printSnake(&s);
     while s.isAlive() {
         print!("Input W/A/S/D (q to quit): ");
