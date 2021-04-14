@@ -8,12 +8,22 @@ use rand::{thread_rng, Rng};
 
 const SIZE: usize = 5;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Direction {
     Up,
     Down,
     Left,
     Right,
+}
+
+impl Direction {
+    fn opposite(&self, a: &Direction) -> bool {
+        match (self, a) {
+            (Direction::Up, Direction::Down) => true,
+            (Direction::Left, Direction::Right) => true,
+            _ => false,
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -23,7 +33,7 @@ pub struct Snake {
     pos: (usize, usize),      // head position
     grid: [[u8; SIZE]; SIZE], // the map
     alive: bool,              // live or death
-    fruit: (usize, usize),
+    fruit: (usize, usize),    // friut location
 }
 
 impl Snake {
@@ -49,7 +59,9 @@ impl Snake {
         self
     }
     pub fn turn(&mut self, dir: Direction) -> &mut Self {
-        self.dir = dir;
+        if !(self.dir.opposite(&dir) || dir.opposite(&self.dir)) {
+            self.dir = dir;
+        }
         self
     }
     pub fn isAlive(&self) -> bool {
@@ -82,7 +94,8 @@ impl Snake {
     }
 }
 
-pub fn newSnake(pos: (usize, usize), dir: Direction) -> Snake {
+pub fn newSnake() -> Snake {
+    let pos = genPos();
     let mut g = [[0; SIZE]; SIZE];
     g[pos.1][pos.0] = 1;
     let mut friut = genPos();
@@ -91,7 +104,7 @@ pub fn newSnake(pos: (usize, usize), dir: Direction) -> Snake {
     }
     Snake {
         len: 1,
-        dir: dir,
+        dir: Direction::Up,
         pos: pos,
         grid: g,
         alive: true,
