@@ -3,8 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use rand::{thread_rng, Rng};
 use ansi_term::Colour;
+use rand::{thread_rng, Rng};
 
 const SIZE: usize = 5;
 
@@ -58,6 +58,7 @@ impl Snake {
     pub fn score(&self) -> u8 {
         self.len
     }
+    pub fn void(&self) {}
     fn updateGrid(&mut self) {
         if self.pos == self.fruit {
             self.len += 1;
@@ -99,22 +100,16 @@ pub fn newSnake(pos: (usize, usize), dir: Direction) -> Snake {
 }
 
 pub fn printSnake(s: &Snake) {
-    println!(
-        "Direction: {:?}, Head location: ({}, {})",
-        s.dir, s.pos.0, s.pos.1
-    );
-    println!(
-        "Snake length: {}, Friut location: ({}, {})",
-        s.len, s.fruit.0, s.fruit.1
-    );
+    println!("Direction: {:?}, Head location: {:?}", s.dir, s.pos);
+    println!("Snake length: {}, Friut location: {:?}", s.len, s.fruit);
     for i in 0..SIZE {
         for j in 0..SIZE {
             if (j, i) == s.fruit {
-                print!("{} ", Colour::Red.bold().paint("*"))
+                print!("{}", Colour::Red.bold().paint(format!("{:^3}", "*")))
             } else {
                 match s.grid[i][j] {
-                    0 => print!("0 "),
-                    n => print!("{} ", Colour::Green.bold().paint(format!("{}", n)))
+                    0 => print!("{:^3}", 0),
+                    n => print!("{}", Colour::Green.bold().paint(format!("{:^3}", n))),
                 }
             }
         }
