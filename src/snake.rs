@@ -6,7 +6,7 @@
 use ansi_term::Colour;
 use rand::{thread_rng, Rng};
 
-const SIZE: usize = 5;
+const SIZE: usize = 5; // the map size
 
 #[derive(Debug, PartialEq)]
 pub enum Direction {
@@ -21,6 +21,8 @@ impl Direction {
         match (self, a) {
             (Direction::Up, Direction::Down) => true,
             (Direction::Left, Direction::Right) => true,
+            (Direction::Down, Direction::Up) => true,
+            (Direction::Right, Direction::Left) => true,
             _ => false,
         }
     }
@@ -45,14 +47,14 @@ impl Snake {
             Direction::Right => self.pos.0 = (self.pos.0 + 1) % SIZE,
         }
         if self.grid[self.pos.1][self.pos.0] > 0 {
-            self.alive = false;
+            self.alive = false; // eat itself -> game over :P
         }
         self.updateGrid();
         self
     }
     pub fn turn(&mut self, dir: Direction) -> &mut Self {
-        if !(self.dir.opposite(&dir) || dir.opposite(&self.dir)) {
-            self.dir = dir;
+        if !self.dir.opposite(&dir) {
+            self.dir = dir; // head can only turn 90 degrees
         }
         self
     }
@@ -67,7 +69,7 @@ impl Snake {
         if self.pos == self.fruit {
             self.len += 1;
             self.grid[self.pos.1][self.pos.0] = self.len;
-            // filled all the blocks, game over
+            // if the sanke filled all the blocks, game over
             if self.len as usize == SIZE * SIZE {
                 self.alive = false;
             } else {
@@ -75,13 +77,13 @@ impl Snake {
                 while self.grid[fruit.1][fruit.0] != 0 {
                     fruit = genPos();
                 }
-                self.fruit = fruit;
+                self.fruit = fruit; // generate new friut location
             }
         } else {
             for i in 0..SIZE {
                 for j in 0..SIZE {
                     if self.grid[i][j] > 0 {
-                        self.grid[i][j] -= 1;
+                        self.grid[i][j] -= 1; // snake move forward
                     }
                 }
             }

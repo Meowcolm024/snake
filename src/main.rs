@@ -18,7 +18,7 @@ fn main() {
         io::stdin()
             .read_line(&mut input)
             .expect("error: unable to read user input");
-        print!("\x1B[2J\x1B[1;1H");
+        print!("\x1B[2J\x1B[1;1H"); // clear screen and move cursor
         match input.trim() {
             "q" => break,
             "w" => s.turn(snake::Direction::Up).void(),
