@@ -67,12 +67,16 @@ impl Snake {
         if self.pos == self.fruit {
             self.len += 1;
             self.grid[self.pos.1][self.pos.0] = self.len;
-            // generate new fruit position
-            let mut friut = genPos();
-            while self.grid[friut.1][friut.0] != 0 {
-                friut = genPos();
+            // filled all the blocks, game over
+            if self.len as usize == SIZE * SIZE {
+                self.alive = false;
+            } else {
+                let mut fruit = genPos();
+                while self.grid[fruit.1][fruit.0] != 0 {
+                    fruit = genPos();
+                }
+                self.fruit = fruit;
             }
-            self.fruit = friut;
         } else {
             for i in 0..SIZE {
                 for j in 0..SIZE {
