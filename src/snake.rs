@@ -112,7 +112,7 @@ pub fn newSnake(dir: Direction) -> Snake {
 
 pub fn printSnake(s: &Snake) {
     println!("Direction: {:?}, Head location: {:?}", s.dir, s.pos);
-    println!("Snake length: {}, Friut location: {:?}", s.len, s.fruit);
+    println!("Snake length: {}, Fruit location: {:?}", s.len, s.fruit);
     for i in 0..SIZE {
         for j in 0..SIZE {
             if (j, i) == s.fruit {
